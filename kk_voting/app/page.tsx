@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+
 
 export const metadata: Metadata = {
   title: "Королі та Королеви — Голосування студентів",
@@ -66,9 +68,11 @@ export default function HomePage() {
               {/* <button className="px-5 py-2.5 rounded-full border border-zinc-100 bg-zinc-100 text-zinc-950 text-sm md:text-base font-alt font-semibold uppercase tracking-wide hover:bg-transparent hover:text-zinc-100 transition">
                 Проголосувати
               </button> */}
-              <button className="px-5 py-2.5 rounded-full border border-zinc-100 bg-zinc-100 text-zinc-950 text-sm md:text-base font-alt font-semibold uppercase tracking-wide hover:bg-transparent hover:text-zinc-100 transition">
-                Подати кандидата
-              </button>
+              <Link href="/vote">
+                <button className="px-5 py-2.5 rounded-full border border-zinc-100 bg-zinc-100 text-zinc-950 text-sm md:text-base font-alt font-semibold uppercase tracking-wide hover:bg-transparent hover:text-zinc-100 transition">
+                  Проголосувати
+                </button>
+              </Link>
               <button className="px-5 py-2.5 rounded-full border border-zinc-500/60 text-zinc-100 text-sm md:text-base font-alt tracking-wide hover:border-zinc-200 hover:bg-zinc-900/40 transition">
                 Дізнатися більше
               </button>
