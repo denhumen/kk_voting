@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import AnimatedPiece from "@/components/AnimatedPiece";
-
+import { trackEvent } from "./lib/track";
 
 export const metadata: Metadata = {
   title: "Королі та Королеви — Голосування студентів",
@@ -100,12 +100,23 @@ export default function HomePage() {
                 </button>
               </Link> */}
               <Link href={"https://docs.google.com/forms/d/e/1FAIpQLSf8CTGm1qSzcyrXV8zCy4Y1V72iq6yPBZ1QbgAXTQw3g9dcyA/viewform?usp=dialog"}>
-                <button className="px-5 py-2.5 rounded-full border border-zinc-100 bg-zinc-100 text-zinc-950 text-sm md:text-base font-alt font-semibold uppercase tracking-wide hover:bg-transparent hover:text-zinc-100 transition">
+                <button className="px-5 py-2.5 rounded-full border border-zinc-100 bg-zinc-100 text-zinc-950 text-sm md:text-base font-alt font-semibold uppercase tracking-wide hover:bg-transparent hover:text-zinc-100 transition"
+                        onClick={() =>
+                          trackEvent("click_submit_candidate", {
+                            location: "hero",
+                          })
+                        }
+                        >
                     Подати кандидата
                 </button>
               </Link>
               <Link href={"/details"}>
-                <button className="px-5 py-2.5 rounded-full border border-zinc-500/60 text-zinc-100 text-sm md:text-base font-alt tracking-wide hover:border-zinc-200 hover:bg-zinc-900/40 transition">
+                <button className="px-5 py-2.5 rounded-full border border-zinc-500/60 text-zinc-100 text-sm md:text-base font-alt tracking-wide hover:border-zinc-200 hover:bg-zinc-900/40 transition"
+                        onClick={() =>
+                          trackEvent("click_coming_soon", {
+                            location: "hero",
+                          })
+                        }>
                   Щось буде скоро...
                 </button>
               </Link>
