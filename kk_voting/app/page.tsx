@@ -75,6 +75,7 @@ export default function HomePage() {
             <div className="flex items-center gap-2 opacity-80">
               <img src="/logos/kavalerka.png" alt="СО Кавалєрка" className="h-10 md:h-12 w-auto" />
               <img src="/logos/studgov.png" alt="Уряд студентів УКУ" className="h-10 md:h-12 w-auto" />
+              <img src="/logos/workua.png" alt="Уряд студентів УКУ" className="h-10 md:h-12 w-auto" />
             </div>
 
             <h1 className="font-alt text-4xl md:text-5xl lg:text-6xl leading-tight">
