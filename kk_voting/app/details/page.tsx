@@ -3,7 +3,7 @@ import Link from "next/link";
 import clsx from "clsx";
 
 export const metadata: Metadata = {
-  title: "Королі та Королеви — Деталі події",
+  title: "K&K — Деталі",
   description:
     "Деталі події Королі та Королеви: мотивація, етапи подачі, голосування та нагородження.",
 };

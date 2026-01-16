@@ -5,7 +5,7 @@ import { trackEvent } from "./lib/track";
 import AnalyticsButton from "@/components/AnalyticsButton";
 
 export const metadata: Metadata = {
-  title: "Королі та Королеви — Голосування студентів",
+  title: "Королі та Королеви",
   description:
     "Королі та Королеви — відзначаємо студентів УКУ за академічні, соціальні, культурні та благодійні досягнення.",
 };
