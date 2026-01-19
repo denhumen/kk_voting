@@ -3,8 +3,26 @@ import { notFound } from "next/navigation";
 import { getCandidateById, getCategories } from "@/app/lib/db/candidates";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
-import { useEffect } from "react";
+import type { Metadata } from "next";
 import CandidateLinksToast from "@/components/CandidateLinksToast";
+
+export async function generateMetadata(
+    { params }: { params: Promise<{ id: string }>; }
+): Promise<Metadata> {
+  const { id } = await params;
+  const candidate = await getCandidateById(id);
+
+  if (!candidate) {
+    return {
+      title: "Кандидат — K&K",
+    };
+  }
+
+  return {
+    title: `${candidate.full_name} — K&K`,
+    description: candidate.short_description,
+  };
+}
 
 export const revalidate = 60;
 
