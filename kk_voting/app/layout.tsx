@@ -3,11 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import FlyoutMenu from "@/components/FlyoutMenu";
-import { Suspense } from "react";
-import Loading from "./loading";
 import { AuthOverlayProvider } from "@/components/auth/AuthOverlayContext";
 import ToasterClient from "@/components/ToasterClient";
 import AuthToastListener from "@/components/AuthToastListener";
+import {Suspense} from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +39,9 @@ export default function RootLayout({
           <Analytics />
 
           <ToasterClient />
-          <AuthToastListener />
+          <Suspense fallback={null}>
+            <AuthToastListener />
+          </Suspense>
         </AuthOverlayProvider>
       </body>
     </html>

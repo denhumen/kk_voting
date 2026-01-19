@@ -10,7 +10,6 @@ export default async function LoginPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // already logged in → go vote
   if (user) redirect("/vote");
 
   return (
