@@ -3,9 +3,6 @@
 import { useEffect, useRef } from "react";
 import CandidateCard from "./CandidateCard";
 
-// Note: We REMOVED the top-level imports for "packery" and "imagesloaded"
-// to prevent the "window is not defined" server error.
-
 type Candidate = {
     id: string;
     full_name: string;
@@ -28,14 +25,13 @@ export default function CandidateGrid({
     useEffect(() => {
         let pckryInstance: any = null;
 
-        // We define an async function to load libraries only on the client
         const initGrid = async () => {
             if (!gridRef.current) return;
 
-            // 1. Dynamically import the libraries
-            // This ensures they are NOT loaded on the server
-            const Packery = (await import("packery")).default;
-            const imagesLoaded = (await import("imagesloaded")).default;
+            // 1. Dynamically import and CAST TO ANY
+            // This fixes the "This expression is not constructable" error
+            const Packery = (await import("packery")).default as any;
+            const imagesLoaded = (await import("imagesloaded")).default as any;
 
             // 2. Initialize Packery
             pckryInstance = new Packery(gridRef.current, {
@@ -46,20 +42,15 @@ export default function CandidateGrid({
             });
 
             // 3. Bind imagesLoaded
-            // "packery" type definitions can be tricky with dynamic imports,
-            // so we cast imagesLoaded as any to avoid TS errors if necessary.
-            const imgLoad = (imagesLoaded as any)(gridRef.current);
+            const imgLoad = imagesLoaded(gridRef.current);
 
             imgLoad.on("progress", () => {
-                // Force re-layout as each image loads
                 pckryInstance.layout();
             });
         };
 
-        // Run the initialization
         initGrid();
 
-        // Cleanup when candidates change or component unmounts
         return () => {
             if (pckryInstance) {
                 pckryInstance.destroy();
@@ -69,8 +60,6 @@ export default function CandidateGrid({
 
     return (
         <div ref={gridRef} className="-mx-4">
-            {/* SIZER: Defines 1 column width */}
-            {/* Mobile: 100%, Tablet: 50%, Desktop: 33.333% */}
             <div className="grid-sizer w-full md:w-1/2 lg:w-1/3" />
 
             {candidates.map((c) => (
