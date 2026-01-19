@@ -48,7 +48,7 @@ export default function HomePage() {
             alt="Білий король"
             rotate={8}
             scale={0.9}
-            className="absolute top-[0vh] left-[5vh] md:top-[0vh] md:left-[18vw] lg:top-10 lg:left-[12vw] w-28 z-0 opacity-50"
+            className="mt-15 sm:mt-0 absolute top-[0vh] left-[5vh] md:top-[0vh] md:left-[18vw] lg:top-10 lg:left-[12vw] w-28 z-0 opacity-50"
           />
           <AnimatedPiece
             src="/chess/knight_white.png"
@@ -64,7 +64,7 @@ export default function HomePage() {
             scale={0.9}
             className="absolute opacity-0 md:top-64 md:right-[1vw] w-24 z-0 lg:opacity-100"
           />
-          <div className="relative z-10 max-w-xl space-y-6">
+          <div className="mt-10 sm:mt-0 relative z-10 max-w-xl space-y-6">
             <p
               className="uppercase text-xs md:text-sm text-zinc-400 font-alt"
               style={{ letterSpacing: "0.35em" }}
@@ -102,12 +102,12 @@ export default function HomePage() {
                 </button>
               </Link> */}
               <AnalyticsButton
-                href="https://docs.google.com/forms/d/e/1FAIpQLSf8CTGm1qSzcyrXV8zCy4Y1V72iq6yPBZ1QbgAXTQw3g9dcyA/viewform?usp=dialog"
+                href="/candidates"
                 event="click_submit_candidate"
                 eventData={{ location: "hero" }}
                 className="px-5 py-2.5 rounded-full border border-zinc-100 bg-zinc-100 text-zinc-950 text-sm md:text-base font-alt font-semibold uppercase tracking-wide hover:bg-transparent hover:text-zinc-100 transition"
               >
-                Подати кандидата
+                Переглянути кандидатів
               </AnalyticsButton>
 
               <AnalyticsButton

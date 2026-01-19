@@ -2,6 +2,12 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import FlyoutMenu from "@/components/FlyoutMenu";
+import { Suspense } from "react";
+import Loading from "./loading";
+import { AuthOverlayProvider } from "@/components/auth/AuthOverlayContext";
+import ToasterClient from "@/components/ToasterClient";
+import AuthToastListener from "@/components/AuthToastListener";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,8 +34,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
-        <Analytics />
+        <AuthOverlayProvider>
+          <FlyoutMenu />
+          {children}
+          <Analytics />
+
+          <ToasterClient />
+          <AuthToastListener />
+        </AuthOverlayProvider>
       </body>
     </html>
   );

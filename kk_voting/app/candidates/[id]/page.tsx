@@ -1,6 +1,12 @@
 import Link from "next/link";
-import { candidates, categories } from "@/app/lib/mockCandidates";
 import { notFound } from "next/navigation";
+import { getCandidateById, getCategories } from "@/app/lib/db/candidates";
+import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
+import { useEffect } from "react";
+import CandidateLinksToast from "@/components/CandidateLinksToast";
+
+export const revalidate = 60;
 
 function formatCategoryEmoji(title: string) {
   if (title.includes("Академ")) return "🎓";
@@ -10,6 +16,59 @@ function formatCategoryEmoji(title: string) {
   return "👑";
 }
 
+function hasUrl(text: string) {
+  const urlRegex = /(https?:\/\/[^\s]+)|(www\.[^\s]+)/gi;
+  return urlRegex.test(text);
+}
+
+function CandidatePhotoCard({
+  photoUrl,
+  alt,
+  city,
+  isWide,
+}: {
+  photoUrl: string | null;
+  alt: string;
+  city: string;
+  isWide: boolean;
+}) {
+  if (!photoUrl) return null;
+
+  return (
+    <div className="rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-900/30 shadow-xl">
+      <div
+        className={[
+          "relative overflow-hidden",
+          isWide ? "aspect-video sm:aspect-[16/8]" : "aspect-[3/4]",
+        ].join(" ")}
+      >
+        {/* blurred background fill */}
+        <img
+          src={photoUrl}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover blur-2xl scale-110 opacity-50"
+        />
+
+        {/* main image (no cropping) */}
+        <img
+          src={photoUrl}
+          alt={alt}
+          className="relative z-10 h-full w-full object-contain"
+        />
+
+        {/* readable overlay for text */}
+        <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
+
+        <div className="absolute bottom-4 left-4 right-4 z-30">
+          <p className="text-xs uppercase tracking-wide text-white/80">Місто</p>
+          <p className="text-xl font-alt text-white">{city}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default async function CandidateDetailsPage({
   params,
 }: {
@@ -17,17 +76,21 @@ export default async function CandidateDetailsPage({
 }) {
   const { id } = await params;
 
-  const candidate = candidates.find((c) => c.id === id);
+  const candidate = await getCandidateById(id);
   if (!candidate) return notFound();
 
+  const categories = await getCategories();
   const categoryTitle =
-    categories.find((x) => x.id === candidate.categoryId)?.title ?? "Номінація";
+    categories.find((x) => x.id === candidate.category_id)?.title ?? "Номінація";
 
   const emoji = formatCategoryEmoji(categoryTitle);
+  const containsLinks = hasUrl(candidate.long_description);
+  const isWide = !!candidate.is_wide;
 
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-50">
       {/* HERO */}
+      <CandidateLinksToast show={containsLinks} toastId={id}/>
       <section className="relative overflow-hidden px-6 pt-10 pb-12 md:px-10">
         {/* glow */}
         <div className="pointer-events-none absolute -inset-24 opacity-60 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.10),transparent_60%)]" />
@@ -36,7 +99,7 @@ export default async function CandidateDetailsPage({
           <img src="/chess/quene_black.png" alt="" className="h-[420px] w-auto" />
         </div>
 
-        <div className="relative mx-auto max-w-6xl">
+        <div className="mt-10 relative mx-auto max-w-6xl">
           {/* breadcrumb row */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <Link
@@ -53,47 +116,64 @@ export default async function CandidateDetailsPage({
           </div>
 
           <h1 className="mt-8 text-4xl md:text-6xl font-alt leading-tight">
-            {candidate.name}
+            {candidate.full_name}
           </h1>
 
           <p className="mt-4 max-w-3xl text-zinc-200/90 text-base md:text-lg leading-relaxed font-main">
-            {candidate.shortDescription}
+            {candidate.short_description}
           </p>
         </div>
       </section>
 
       {/* BODY */}
       <section className="px-6 pb-16 md:px-10 mt-5">
-        <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-10">
+      <div
+        className={[
+          "mx-auto max-w-6xl gap-10",
+          isWide
+            ? "flex flex-col"
+            : "grid grid-cols-1 lg:grid-cols-[380px_1fr]",
+        ].join(" ")}
+      >
           {/* LEFT: PHOTO CARD */}
-          <aside className="relative">
-            <div className="rounded-3xl overflow-hidden border border-zinc-800 bg-zinc-900/30 shadow-xl">
-              <div className="relative aspect-[3/4] overflow-hidden">
-                <img
-                  src={candidate.photoUrl}
-                  alt={candidate.name}
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <p className="text-xs uppercase tracking-wide text-white/80">
-                    Місто
-                  </p>
-                  <p className="text-xl font-alt text-white">{candidate.city}</p>
-                </div>
+          {isWide && (
+            <div>
+              <CandidatePhotoCard
+                photoUrl={candidate.photo_url}
+                alt={candidate.full_name}
+                city={candidate.city}
+                isWide={true}
+              />
+              <div className="mt-5 flex flex-wrap gap-2">
+                <span className="rounded-full border border-zinc-700 bg-zinc-900/40 px-3 py-1 text-xs text-zinc-200 font-main">
+                  {emoji} {categoryTitle}
+                </span>
+                <span className="rounded-full border border-zinc-700 bg-zinc-900/40 px-3 py-1 text-xs text-zinc-200 font-main">
+                  Профіль кандидата
+                </span>
               </div>
             </div>
+          )}
 
-            {/* small info chips */}
-            <div className="mt-5 flex flex-wrap gap-2">
-              <span className="rounded-full border border-zinc-700 bg-zinc-900/40 px-3 py-1 text-xs text-zinc-200 font-main">
-                {emoji} {categoryTitle}
-              </span>
-              <span className="rounded-full border border-zinc-700 bg-zinc-900/40 px-3 py-1 text-xs text-zinc-200 font-main">
-                Профіль кандидата
-              </span>
-            </div>
-          </aside>
+          {!isWide && (
+            <aside className="relative">
+              <CandidatePhotoCard
+                photoUrl={candidate.photo_url}
+                alt={candidate.full_name}
+                city={candidate.city}
+                isWide={false}
+              />
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                <span className="rounded-full border border-zinc-700 bg-zinc-900/40 px-3 py-1 text-xs text-zinc-200 font-main">
+                  {emoji} {categoryTitle}
+                </span>
+                <span className="rounded-full border border-zinc-700 bg-zinc-900/40 px-3 py-1 text-xs text-zinc-200 font-main">
+                  Профіль кандидата
+                </span>
+              </div>
+            </aside>
+          )}
 
           {/* RIGHT: DETAILS */}
           <div>
@@ -103,9 +183,22 @@ export default async function CandidateDetailsPage({
                 <h2 className="text-lg md:text-xl font-alt">Історія кандидата</h2>
               </div>
 
-              <div className="mt-4 max-w-prose text-zinc-100/90 text-base leading-relaxed font-main whitespace-pre-line">
-                {candidate.longDescription}
+              <div className="prose prose-invert max-w-none">
+                <ReactMarkdown remarkPlugins={[remarkBreaks]}
+                               components={{
+                                a: ({ node, ...props }) => (
+                                  <a
+                                    {...props}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-400 underline hover:text-blue-300 transition"
+                                  />
+                                ),
+                              }}>
+                  {candidate.long_description}
+                </ReactMarkdown>
               </div>
+
             </div>
 
             {/* Voting callout */}
@@ -150,22 +243,6 @@ export default async function CandidateDetailsPage({
                   Подивитись таймлайн
                 </Link>
               </div>
-            </div>
-
-            {/* bottom nav */}
-            <div className="mt-10 flex flex-wrap items-center justify-between gap-3 text-sm">
-              <Link
-                href="/candidates"
-                className="text-zinc-300 hover:text-white transition font-main"
-              >
-                ← Повернутись до списку кандидатів
-              </Link>
-              <Link
-                href="/"
-                className="text-zinc-300 hover:text-white transition font-main"
-              >
-                На головну →
-              </Link>
             </div>
           </div>
         </div>

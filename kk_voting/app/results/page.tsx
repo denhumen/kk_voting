@@ -8,7 +8,7 @@ function isUcuEmail(email?: string | null) {
   return email.toLowerCase().endsWith("@ucu.edu.ua");
 }
 
-export default async function VotePage() {
+export default async function ResultsPage() {
   const supabase = createClient(cookies());
   const {
     data: { user },
@@ -34,7 +34,8 @@ export default async function VotePage() {
           <h1 className="mt-3 text-3xl font-alt">Доступ обмежено</h1>
 
           <p className="mt-4 text-zinc-300 font-main leading-relaxed">
-            Голосування доступне лише для акаунтів <span className="font-semibold">@ucu.edu.ua</span>.
+            Результати доступні лише для акаунтів{" "}
+            <span className="font-semibold">@ucu.edu.ua</span>.
             <br />
             Ти увійшов як: <span className="font-semibold">{email}</span>
           </p>
@@ -70,12 +71,13 @@ export default async function VotePage() {
             >
               Королі та Королеви · УКУ
             </p>
-            <h1 className="mt-2 text-4xl md:text-5xl font-alt">Голосування</h1>
+            <h1 className="mt-2 text-4xl md:text-5xl font-alt">Результати</h1>
             <p className="mt-3 text-zinc-300 font-main">
-              Тут зовсім скоро буде голосування!
+              Тут ви зовсім скоро зможете побачити результати голосування!
             </p>
           </div>
         </div>
+
         {/* PARTNER BANNER */}
         <div className="relative mt-12">
           <div className="
@@ -113,7 +115,7 @@ export default async function VotePage() {
           </div>
         </div>
 
-        {/* Placeholder voting UI */}
+        {/* Placeholder results UI */}
         <div className="mt-10 rounded-3xl border border-zinc-800 bg-zinc-900/40 backdrop-blur p-8">
           <h2 className="text-xl font-alt">Скоро</h2>
           <p className="mt-3 text-zinc-300 font-main leading-relaxed">
