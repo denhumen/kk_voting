@@ -102,21 +102,21 @@ export default function HomePage() {
                 </button>
               </Link> */}
               <AnalyticsButton
-                href="/candidates"
-                event="click_submit_candidate"
-                eventData={{ location: "hero" }}
-                className="px-5 py-2.5 rounded-full border border-zinc-100 bg-zinc-100 text-zinc-950 text-sm md:text-base font-alt font-semibold uppercase tracking-wide hover:bg-transparent hover:text-zinc-100 transition"
+                  href="/vote"
+                  event="click_submit_candidate"
+                  eventData={{ location: "hero" }}
+                  className="px-5 py-2.5 rounded-full border border-zinc-100 bg-zinc-100 text-zinc-950 text-sm md:text-base font-alt font-semibold uppercase tracking-wide hover:bg-transparent hover:text-zinc-100 transition"
               >
-                Переглянути кандидатів
+                Проголосувати
               </AnalyticsButton>
 
               <AnalyticsButton
-                href="/details"
+                href="/candidates"
                 event="click_coming_soon"
                 eventData={{ location: "hero" }}
                 className="px-5 py-2.5 rounded-full border border-zinc-500/60 text-zinc-100 text-sm md:text-base font-alt tracking-wide hover:border-zinc-200 hover:bg-zinc-900/40 transition"
               >
-                Щось буде скоро...
+                Переглянути кандидатів
               </AnalyticsButton>
 
             </div>
@@ -126,7 +126,7 @@ export default function HomePage() {
               голос у кожній номінації.
             </p> */}
             <p className="text-xs md:text-sm text-zinc-400 pt-2 font-main">
-              Зараз триває етап подання заявок, доступний лише для спільноти УКУ. Ви можете номінувати себе, свого друга чи подругу, знайомого чи знайому або будь-якого іншого студента чи студентку УКУ, які вас надихають. Також висувати кандидатів на номінації можуть викладачі та викладачки
+              Зараз триває етап голосування, доступний лише для спільноти УКУ. Долучайтесь вже, ваш голос має
             </p>
           </div>
         </section>
