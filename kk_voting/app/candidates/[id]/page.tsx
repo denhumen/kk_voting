@@ -219,46 +219,25 @@ export default async function CandidateDetailsPage({
 
             </div>
 
-            {/* Voting callout */}
-            <div className="mt-8 rounded-3xl border border-zinc-800 bg-gradient-to-b from-zinc-900/50 to-zinc-900/20 p-6 md:p-8">
-              <h3 className="text-lg font-alt">Голосування скоро</h3>
-              <p className="mt-2 text-sm md:text-base text-zinc-200/80 font-main leading-relaxed">
-                Щоб проголосувати, потрібен вхід через Google. Доступ буде лише для
-                акаунтів <span className="font-semibold">@ucu.edu.ua</span>.
+            <div className="mt-8 rounded-3xl border border-amber-500/20 bg-gradient-to-b from-amber-500/5 to-zinc-900/20 p-6 md:p-8">
+              <h3 className="text-xl font-alt text-amber-500">Долучись до вибору</h3>
+              <p className="mt-2 text-sm md:text-base text-zinc-300 font-main leading-relaxed">
+                Твій голос має значення. Перейди на сторінку голосування, щоб підтримати фаворитів.
               </p>
 
-              <ul className="mt-4 space-y-2 text-sm text-zinc-200/80 font-main">
-                <li className="flex gap-2">
-                  <span className="text-zinc-300">•</span> Один студент — один голос у кожній номінації
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-zinc-300">•</span> Результати зʼявляться на окремій сторінці
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-zinc-300">•</span> Старт оголосимо в соцмережах та розсилці
-                </li>
-              </ul>
-
               <div className="mt-6 flex flex-wrap gap-3">
-                <button
-                  disabled
-                  className="rounded-full bg-zinc-100 text-zinc-900 px-5 py-2 text-sm font-alt font-semibold uppercase opacity-60 cursor-not-allowed"
+                <Link
+                    href="/vote"
+                    className="rounded-full bg-amber-500 text-black px-6 py-3 text-sm font-alt font-bold uppercase hover:bg-amber-400 hover:scale-105 transition-all shadow-lg shadow-amber-500/20"
                 >
-                  Проголосувати (скоро)
-                </button>
-
-                <button
-                  disabled
-                  className="rounded-full border border-zinc-700 px-5 py-2 text-sm font-alt uppercase text-zinc-100 opacity-60 cursor-not-allowed"
-                >
-                  Результати (скоро)
-                </button>
+                  Проголосувати
+                </Link>
 
                 <Link
-                  href="/details"
-                  className="rounded-full border border-zinc-700 bg-zinc-900/30 px-5 py-2 text-sm font-alt uppercase hover:border-zinc-400 transition"
+                    href="/results"
+                    className="rounded-full border border-zinc-700 px-6 py-3 text-sm font-alt uppercase text-zinc-300 hover:text-white hover:border-zinc-500 transition"
                 >
-                  Подивитись таймлайн
+                  Результати
                 </Link>
               </div>
             </div>

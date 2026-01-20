@@ -98,7 +98,7 @@ export default function CandidateCard({
                 <div className={["p-6 flex flex-col", featured ? "md:p-8 justify-between" : ""].join(" ")}>
                     <div>
                         <p className="text-xs font-alt uppercase tracking-[0.35em] text-zinc-400">
-                            Претендент
+                            Номінант
                         </p>
                         <p className="mt-3 text-base leading-relaxed text-zinc-300 font-main">
                             {shortDescription}
