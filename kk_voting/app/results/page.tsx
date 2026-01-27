@@ -7,6 +7,7 @@ import { getSettings } from "@/app/lib/db/settings";
 import { getResults } from "@/app/lib/db/results";
 import CountdownTimer from "@/components/CountdownTimer"; // Import Timer
 import type { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "K&K — Результати",
@@ -18,6 +19,14 @@ export const revalidate = 0;
 function isUcuEmail(email?: string | null) {
   if (!email) return false;
   return email.toLowerCase().endsWith("@ucu.edu.ua");
+}
+
+function getOptimizedUrl(url: string | null, width: number) {
+  if (!url) return null;
+  if (url.includes("supabase.co")) {
+    return `${url}?width=${width}&resize=contain&quality=75`;
+  }
+  return url;
 }
 
 export default async function ResultsPage() {
@@ -92,12 +101,54 @@ export default async function ResultsPage() {
                 </div>
             )}
 
-            {/* Bottom Banner */}
-            <div className="mt-8 pt-8 border-t border-zinc-800 w-full flex flex-col items-center gap-3">
-              <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-alt">Генеральний партнер</p>
-              <a href="https://www.work.ua/" target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
-                <img src="/logos/workua_white.png" alt="Work.ua" className="h-8 object-contain" />
-              </a>
+            {/* 🟢 REDESIGNED BOTTOM FOOTER */}
+            <div className="mt-8 pt-10 border-t border-zinc-800 w-full flex flex-col items-center gap-10">
+
+              {/* General Partner */}
+              <div className="flex flex-col items-center gap-3">
+                <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-alt">Генеральний партнер</p>
+                <a href="https://www.work.ua/" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition-opacity">
+                  <Image
+                      src="/logos/workua_white.png"
+                      alt="Work.ua"
+                      width={140}
+                      height={50}
+                      className="h-10 w-auto object-contain"
+                  />
+                </a>
+              </div>
+
+              {/* Gift Partners */}
+              <div className="flex flex-col items-center gap-3">
+                <p className="text-[10px] uppercase tracking-widest text-zinc-600 font-alt">GIFT-партнери</p>
+
+                <div className="flex items-center gap-8">
+                  {/* Partner 1 */}
+                  <a href="https://komubook.com.ua/" target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
+                    <Image
+                        src="/logos/komubook.svg"
+                        alt="Komubook"
+                        width={120}
+                        height={40}
+                        className="h-8 w-auto object-contain"
+                    />
+                  </a>
+
+                  {/* Dot Separator */}
+                  <div className="h-1 w-1 bg-zinc-800 rounded-full" />
+
+                  {/* Partner 2 */}
+                  <a href="https://www.instagram.com/ucu_fitness/" target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">
+                    <Image
+                        src="/logos/ucu_fitness.svg"
+                        alt="UCU Fitness"
+                        width={120}
+                        height={40}
+                        className="h-8 w-auto object-contain"
+                    />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </main>
@@ -128,26 +179,54 @@ export default async function ResultsPage() {
               </div>
             </div>
 
-            {/* PARTNER BANNER */}
-            <div className="w-full rounded-t-3xl rounded-b-none border-t border-x border-zinc-700/50 border-b-0 bg-zinc-800/30 backdrop-blur-sm px-6 py-4 md:px-8 md:py-6 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
-              <div className="flex items-center gap-4">
-                <div className="hidden md:block h-8 w-1 bg-amber-500/50 rounded-full" />
-                <div className="text-center md:text-left">
-                            <span className="text-xs uppercase tracking-[0.2em] font-alt text-zinc-400 block mb-1">
-                                Генеральний партнер
-                            </span>
-                  <span className="text-sm text-zinc-300 font-main">
-                                Підтримуємо талановиту молодь разом
-                            </span>
+            {/* PARTNER BANNER (Expanded) */}
+            <div className="w-full rounded-t-3xl rounded-b-none border-t border-x border-zinc-700/50 border-b-0 bg-zinc-800/30 backdrop-blur-sm px-6 py-6 md:px-8 flex flex-col gap-8">
+
+              {/* Row 1: General Partner (Work.ua) */}
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
+                <div className="flex items-center gap-4">
+                  <div className="hidden md:block h-8 w-1 bg-amber-500/50 rounded-full" />
+                  <div className="text-center md:text-left">
+                        <span className="text-xs uppercase tracking-[0.2em] font-alt text-zinc-400 block mb-1">
+                            Генеральний партнер
+                        </span>
+                    <span className="text-sm text-zinc-300 font-main">
+                            Підтримуємо талановиту молодь разом
+                        </span>
+                  </div>
+                </div>
+                <a href="https://www.work.ua/" target="_blank" rel="noopener noreferrer" className="group">
+                  <img
+                      src="/logos/workua_white.png"
+                      alt="Work.ua"
+                      className="h-12 md:h-20 object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 filter grayscale group-hover:grayscale-0"
+                  />
+                </a>
+              </div>
+
+              {/* Divider */}
+              <div className="w-full h-px bg-zinc-700/30" />
+
+              {/* Row 2: Two Additional Partners */}
+              <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-6 sm:gap-12 opacity-80">
+                  <span className="text-[10px] uppercase tracking-widest text-zinc-600 font-alt hidden sm:block">
+                      GIFT-партнери:
+                  </span>
+
+                <div className="flex items-center gap-8">
+                  {/* Partner 1 */}
+                  <a href="https://komubook.com.ua/" className="group">
+                    {/* Replace with your <Image ... /> */}
+                    <img className="h-12 w-auto object-contain" src="/logos/komubook.svg" alt="Komubook" />
+                  </a>
+
+                  {/* Partner 2 */}
+                  <a href="https://www.instagram.com/ucu_fitness/" className="group">
+                    {/* Replace with your <Image ... /> */}
+                    <img className="h-12 w-auto object-contain" src="/logos/ucu_fitness.svg" alt="UCU Fitness" />
+                  </a>
                 </div>
               </div>
-              <a href="https://www.work.ua/" target="_blank" rel="noopener noreferrer" className="group">
-                <img
-                    src="/logos/workua_white.png"
-                    alt="Work.ua"
-                    className="h-12 md:h-14 object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 filter grayscale group-hover:grayscale-0"
-                />
-              </a>
             </div>
           </div>
         </section>
@@ -193,7 +272,14 @@ export default async function ResultsPage() {
                       <div className="absolute top-0 right-0 bg-amber-500 text-black font-alt text-xs font-bold px-3 py-1 rounded-bl-xl uppercase tracking-widest shadow-lg">ФАВОРИТ</div>
                       <div className="relative h-24 w-24 md:h-32 md:w-32 flex-shrink-0 rounded-full border-4 border-amber-500/30 overflow-hidden shadow-2xl">
                         {winner.candidatePhoto ? (
-                            <img src={winner.candidatePhoto} alt={winner.candidateName} className="h-full w-full object-cover" />
+                            <Image
+                                src={getOptimizedUrl(winner.candidatePhoto, 600) || ""}
+                                alt={winner.candidateName}
+                                fill
+                                sizes="(max-width: 768px) 96px, 128px"
+                                className="object-cover"
+                                unoptimized={true}
+                            />
                         ) : (
                             <div className="h-full w-full bg-amber-900/50 flex items-center justify-center text-amber-200 text-3xl">🏆</div>
                         )}
@@ -219,7 +305,17 @@ export default async function ResultsPage() {
                               <div className="flex items-center gap-4 py-2">
                                 <div className="w-6 text-center text-sm font-mono text-zinc-600 font-bold">{index + 2}</div>
                                 <div className="h-10 w-10 rounded-full bg-zinc-800 overflow-hidden flex-shrink-0 border border-zinc-700">
-                                  {runner.candidatePhoto && <img src={runner.candidatePhoto} alt="" className="h-full w-full object-cover grayscale group-hover:grayscale-0 transition" />}
+                                  {runner.candidatePhoto &&
+                                      <Image
+                                          // Request a small 100px version
+                                          src={getOptimizedUrl(runner.candidatePhoto, 100) || ""}
+                                          alt=""
+                                          width={40}
+                                          height={40}
+                                          className="h-full w-full object-cover grayscale group-hover:grayscale-0 transition"
+                                          unoptimized={true}
+                                      />
+                                  }
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <div className="flex justify-between items-end mb-1">

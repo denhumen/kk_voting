@@ -14,12 +14,13 @@ export default function VotesChart({ data }: { data: any[] }) {
                     <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
 
                     <XAxis
-                        dataKey="time" // Shows "14:00"
+                        dataKey="label" // UPDATED: Uses "22.01 14:00" unique string
                         stroke="#71717a"
-                        fontSize={12}
+                        fontSize={10}
                         tickLine={false}
                         axisLine={false}
                         minTickGap={30}
+                        interval="preserveStartEnd"
                     />
                     <YAxis
                         stroke="#71717a"
@@ -29,11 +30,12 @@ export default function VotesChart({ data }: { data: any[] }) {
                         allowDecimals={false}
                     />
                     <Tooltip
-                        cursor={{ fill: '#27272a', opacity: 0.4 }} // Highlight the column on hover
-                        content={({ active, payload, label }) => {
+                        cursor={{ fill: '#27272a', opacity: 0.4 }}
+                        content={({ active, payload }) => {
                             if (active && payload && payload.length) {
                                 return (
                                     <div className="bg-zinc-900 border border-zinc-700 rounded-lg p-3 shadow-xl">
+                                        {/* Display full date from payload */}
                                         <p className="text-zinc-400 text-xs mb-1">{payload[0].payload.fullDate}</p>
                                         <p className="text-amber-500 font-bold text-lg">
                                             {payload[0].value} <span className="text-xs font-normal text-zinc-500">голосів</span>

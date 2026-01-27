@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 function getCategoryStyle(title: string) {
     if (title.includes("Академ")) return { emoji: "🎓", badge: "bg-blue-500/10 border-blue-400/30 text-blue-200" };
@@ -8,6 +9,14 @@ function getCategoryStyle(title: string) {
     if (title.includes("Соці")) return { emoji: "🤝", badge: "bg-emerald-500/10 border-emerald-400/30 text-emerald-200" };
     if (title.includes("Культур")) return { emoji: "🎭", badge: "bg-fuchsia-500/10 border-fuchsia-400/30 text-fuchsia-200" };
     return { emoji: "👑", badge: "bg-zinc-500/10 border-zinc-400/30 text-zinc-200" };
+}
+
+function getOptimizedUrl(url: string | null, width: number) {
+    if (!url) return null;
+    if (url.includes("supabase.co")) {
+        return `${url}?width=${width}&resize=contain&quality=75`;
+    }
+    return url;
 }
 
 export default function CandidateCard({
@@ -40,7 +49,7 @@ export default function CandidateCard({
                 {/* PHOTO */}
                 <div
                     className={[
-                        "relative overflow-hidden",
+                        "relative overflow-hidden bg-zinc-800",
                         featured
                             ? "aspect-[4/3] md:aspect-auto md:min-h-[360px]"
                             : "aspect-[3/4]"
@@ -49,18 +58,22 @@ export default function CandidateCard({
                     {photoUrl && (
                         <>
                             {featured && (
-                                <img
+                                <Image
                                     src={photoUrl}
                                     alt=""
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, 50vw"
                                     aria-hidden
-                                    className="absolute inset-0 h-full w-full object-cover scale-110 blur-2xl opacity-40 z-[0]"
+                                    className="object-cover scale-110 blur-2xl opacity-40 z-[0]"
                                 />
                             )}
-                            <img
+                            <Image
                                 src={photoUrl}
                                 alt={name}
+                                fill // Replaces width/height/relative
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 className={[
-                                    "relative z-0 h-full w-full transition-transform duration-300",
+                                    "transition-transform duration-300 z-10", // z-10 ensures it sits above the blur
                                     featured
                                         ? "object-contain group-hover:scale-[1.05]"
                                         : "object-cover group-hover:scale-[1.05]",
@@ -72,14 +85,14 @@ export default function CandidateCard({
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
                     {/* Badge (Mobile) */}
-                    <div className="sm:hidden absolute left-4 top-4">
-            <span className="inline-flex items-center gap-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 text-xs font-alt uppercase tracking-wide text-white shadow-lg">
-              <span className="text-base leading-none">{cat.emoji}</span>
-                {categoryTitle}
-            </span>
+                    <div className="sm:hidden absolute left-4 top-4 z-10">
+                        <span className="inline-flex items-center gap-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 text-xs font-alt uppercase tracking-wide text-white shadow-lg">
+                          <span className="text-base leading-none">{cat.emoji}</span>
+                            {categoryTitle}
+                        </span>
                     </div>
 
-                    <div className="absolute bottom-4 left-4 right-4">
+                    <div className="absolute bottom-4 left-4 right-4 z-10">
                         <p className="text-xs uppercase tracking-wide text-white/70">
                             {city}
                         </p>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getCandidates, getCategories } from "@/app/lib/db/candidates";
 import CandidateGrid from "@/components/CandidateGrid";
 import { getSettings } from "@/app/lib/db/settings";
+import Image from "next/image";
 
 export const revalidate = 60;
 
@@ -66,10 +67,7 @@ export default async function CandidatesPage() {
               </div>
             </div>
 
-            {/* 2. PARTNER BANNER (Integrated)
-            Shape: Rounded Top (3xl), Sharp Bottom (rounded-b-none),
-            sitting on the bottom edge of the section.
-          */}
+            {/* 2. PARTNER BANNER (Updated Layout) */}
             <div className="
             w-full
             rounded-t-3xl rounded-b-none
@@ -77,38 +75,77 @@ export default async function CandidatesPage() {
             border-b-0
             bg-zinc-800/30
             backdrop-blur-sm
-            px-8 py-6
-            flex flex-col md:flex-row
-            items-center justify-between
-            gap-6
+            px-8 py-8
+            flex flex-col
+            gap-8
           ">
-              <div className="flex items-center gap-4">
-                <div className="h-10 w-1 bg-amber-500/50 rounded-full" />
-                <div>
-                 <span className="text-xs uppercase tracking-[0.2em] font-alt text-zinc-400 block mb-1">
-                   Генеральний партнер
-                 </span>
-                  <span className="text-sm text-zinc-200 font-main">
-                   Підтримуємо талановиту молодь разом
-                 </span>
+              {/* Row 1: General Partner (Work.ua) */}
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="flex items-center gap-4">
+                  <div className="h-10 w-1 bg-amber-500/50 rounded-full" />
+                  <div>
+                   <span className="text-xs uppercase tracking-[0.2em] font-alt text-zinc-400 block mb-1">
+                     Генеральний партнер
+                   </span>
+                    <span className="text-sm text-zinc-200 font-main">
+                     Підтримуємо талановиту молодь разом
+                   </span>
+                  </div>
                 </div>
+
+                <a href="https://www.work.ua/" target="_blank" rel="noopener noreferrer" className="group">
+                  <Image
+                      src="/logos/workua_white.png"
+                      alt="Work.ua"
+                      width={220}
+                      height={60}
+                      className="
+                    h-14
+                    w-auto
+                    object-contain
+                    opacity-70
+                    group-hover:opacity-100
+                    transition-opacity
+                    duration-300
+                    filter grayscale group-hover:grayscale-0
+                  "
+                  />
+                </a>
               </div>
 
-              <a href="https://www.work.ua/" target="_blank" rel="noopener noreferrer" className="group">
-                <img
-                    src="/logos/workua_white.png"
-                    alt="Work.ua"
-                    className="
-                  h-14
-                  object-contain
-                  opacity-70
-                  group-hover:opacity-100
-                  transition-opacity
-                  duration-300
-                  filter grayscale group-hover:grayscale-0
-                "
-                />
-              </a>
+              {/* Divider */}
+              <div className="w-full h-px bg-zinc-700/30" />
+
+              {/* Row 2: Gift Partners */}
+              <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-6 sm:gap-12 opacity-80">
+                  <span className="text-[10px] uppercase tracking-widest text-zinc-600 font-alt hidden sm:block">
+                      GIFT-партнери:
+                  </span>
+
+                <div className="flex items-center gap-10">
+                  {/* Partner 1 */}
+                  <a href="https://komubook.com.ua/" target="_blank" rel="noopener noreferrer" className="group opacity-70 hover:opacity-100 transition-opacity">
+                    <Image
+                        src="/logos/komubook.svg"
+                        alt="Komubook"
+                        width={140}
+                        height={50}
+                        className="h-10 md:h-12 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                    />
+                  </a>
+
+                  {/* Partner 2 */}
+                  <a href="https://www.instagram.com/ucu_fitness/" target="_blank" rel="noopener noreferrer" className="group opacity-70 hover:opacity-100 transition-opacity">
+                    <Image
+                        src="/logos/ucu_fitness.svg"
+                        alt="UCU Fitness"
+                        width={140}
+                        height={50}
+                        className="h-10 md:h-12 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                    />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </section>

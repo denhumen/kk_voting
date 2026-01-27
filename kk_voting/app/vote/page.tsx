@@ -8,6 +8,7 @@ import { getUserVotes } from "@/app/lib/db/votes";
 import VotingFlow from "@/components/VotingFlow";
 import CountdownTimer from "@/components/CountdownTimer";
 import type {Metadata} from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
     title: "K&K — Голосування",
@@ -152,7 +153,13 @@ export default async function VotePage() {
                                         </div>
                                         <div className="relative aspect-[16/9] w-full overflow-hidden bg-zinc-800">
                                             {candidate.photo_url ? (
-                                                <img src={candidate.photo_url} alt={candidate.full_name} className="h-full w-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                                                <Image
+                                                    src={candidate.photo_url}
+                                                    alt={candidate.full_name}
+                                                    fill
+                                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                                    className="object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                                                />
                                             ) : (
                                                 <div className="h-full w-full flex items-center justify-center text-zinc-600">No Photo</div>
                                             )}
