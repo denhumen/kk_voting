@@ -102,12 +102,12 @@ export default function HomePage() {
                 </button>
               </Link> */}
               <AnalyticsButton
-                  href="/vote"
+                  href="/results"
                   event="click_submit_candidate"
                   eventData={{ location: "hero" }}
                   className="px-5 py-2.5 rounded-full border border-zinc-100 bg-zinc-100 text-zinc-950 text-sm md:text-base font-alt font-semibold uppercase tracking-wide hover:bg-transparent hover:text-zinc-100 transition"
               >
-                Проголосувати
+                Результати
               </AnalyticsButton>
 
               <AnalyticsButton
@@ -126,7 +126,7 @@ export default function HomePage() {
               голос у кожній номінації.
             </p> */}
             <p className="text-xs md:text-sm text-zinc-400 pt-2 font-main">
-              Зараз триває етап голосування, доступний лише для спільноти УКУ. Долучайтесь вже, ваш голос має
+              Етап голосування закінчено! Дякую вам всім за участь. Результати будуть оголошені безпосередньо на події
             </p>
           </div>
         </section>
